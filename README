@@ -1,0 +1,6 @@
+Small parser that changes from MySQL to Firebird syntax. Currently it only supports
+database structure dump (no data, only structure) from PHPMyAdmin. Not
+all datatypes are supported, but feel free to "fix" it. It's written
+in PHP and it's open source. 
+
+http://www.backwardcompatible.net/converting-mysql-database-to-firebird
