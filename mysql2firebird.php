@@ -95,6 +95,16 @@ foreach ($statements as $s)
                 $fields[$ix+1] = '';
                 $fields[$ix+2] = '';
             }
+            
+            // set default values for firebird
+			if (strtoupper(trim($f)) == 'DEFAULT' && strpos($fields[$ix+1], 'CHARSET=') === false)
+			{
+				$fields[$ix+1] = str_replace(array(',','/'),'',$fields[$ix+1]);
+				$set_default_queries[] = "alter table ".$tablename." alter ".trim($fields[0])." set default '".$fields[$ix+1]."';";
+				
+				$fields[$ix] = '';
+				$fields[$ix+1] = '';
+			}
         }
         $lines[] = trim(join(' ', $fields));
     }
@@ -137,3 +147,5 @@ END
 set term ; !!
 ";
 
+if (isset($set_default_queries))
+    $output .= implode("\n",$set_default_queries);
