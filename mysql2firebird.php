@@ -15,6 +15,7 @@ foreach ($statements as $s)
 {
     $s = str_replace('`', '"', $s);
     $s = str_replace('ENGINE=MyISAM', '', $s);
+    $s = str_replace('ENGINE=InnoDB', '', $s);
     $s = str_replace('SET SQL_MODE', '-- SET SQL_MODE', $s);
 
     // could be done better
