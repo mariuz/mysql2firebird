@@ -15,12 +15,14 @@ $tablenamecnt=0; //variable to count prepended table names to make unique
 $statements = explode(';', file_get_contents($argv[1]));
 foreach ($statements as $s)
 {
-//echo "<pre>";
+//echo "<pre>"; //debug, print the input statement
 //var_dump($s);
 //echo "</pre>";
 
 //    $s = str_replace('`', '"', $s);
     $s = str_replace('`', '', $s); //use unquoted identifiers
+    $s = str_replace('ENGINE=MyISAM', '', $s);
+    $s = str_replace('ENGINE=InnoDB', '', $s);
     $s = str_replace('ENGINE = MyISAM', '', $s);
     $s = str_replace('ENGINE = InnoDB', '', $s);
     $s = str_replace('SET SQL_MODE', '-- SET SQL_MODE', $s);
@@ -65,7 +67,7 @@ foreach ($statements as $s)
     $lines = array();
     foreach ($sp as $line)
     {
-//echo "<pre1>";
+//echo "<pre1>"; //debug, print each input line
 //var_dump($line);
 //echo "</pre1>";
 
@@ -136,11 +138,11 @@ foreach ($statements as $s)
                 $fields[$ix+1] = '';
             }
 
-//Unique cannot be used if it already a primary key columns, need fancy code to differentiate.
+//Unique cannot be used if it already a primary key columns, would need fancy code to differentiate.
 //Allow unique if the field name is 'Name'
             if (trim($fields[0]) == 'UNIQUE' && trim($fields[$ix+1]) == 'INDEX')
             {
-//echo "<pre2>";
+//echo "<pre2>"; //debug, print fields
 //var_dump($fields);
 //echo "</pre2>";
 				if (strpos($fields[$ix+2], 'Name_') !== false)
