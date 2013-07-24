@@ -1,0 +1,42 @@
+Notes for converting MySql Workbench SQL output create script to 
+SQL suitable for use in Firebird's Isql tool.
+
+On MySql Workbench export:
+ uncheck add SHOW WARNING statements
+ check generate separate CREATE INDEX statements
+
+Example exported file: MySqlNewDatabase.sql
+ 
+Runs the php conversion script, in a linux shell:
+$ php -f mysql2firebird.php MySqlNewDatabase.sql > NewFb1.sql
+
+Convert the output to \r\n format, for Notepad++ use: Edit -> EOL COnversion -> Windows Format
+Possibly Edit the output file to shorten any CONSTRAINT or INDEX names longer than 31 characters
+
+As described: http://www.firebirdsql.org/manual/qsg10-creating.html
+Run: "C:\Program Files (x86)\Firebird\Firebird_2_5\bin\isql.exe" -z
+
+In Firbirds ISQL tool, to create a new database:
+ SQL> CREATE DATABASE 'C:\App\New\Data\New_DB.fdb' page_size 8192
+ CON> user 'SYSDBA' password 'masterkey';
+
+In Firbirds ISQL tool, to replace an existing database:
+ SQL> CONNECT 'C:\App\New\Data\New_DB.fdb'
+ CON> user 'SYSDBA' password 'masterkey';
+ CON> DROP DATABASE;
+ 
+Copy statements from the converted file (i.e. NewFb1.sql) to the ISQL window to create the database.
+- Or -
+ Edit the converted file (i.e. NewFb1.sql) to use as a script file:
+ At top of script add:
+ (make sure DROP same database as script creates)
+ --Comment out lines whether DB exist already
+--CONNECT 'C:\App\New\Data\New_DB.fdb'
+--user 'SYSDBA' password 'masterkey';
+--DROP DATABASE;
+CREATE DATABASE 'C:\App\New\Data\New_DB.fdb' page_size 8192
+user 'SYSDBA' password 'masterkey';
+
+Execute the script to create the new database: 
+ isql -b -e -m -m2 -i NewFbR1.sql -o NewFbR1.log 
+ 
