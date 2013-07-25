@@ -1,6 +1,6 @@
 Small parser that changes from MySQL to Firebird syntax. Currently it only supports
-database structure dump (no data, only structure) from PHPMyAdmin. Not
-all datatypes are supported, but feel free to "fix" it. It's written
+database structure dump (no data, only structure) from PHPMyAdmin and MySql Workbench  
+Not all datatypes are supported, but feel free to "fix" it. It's written
 in PHP and it's open source. 
 
 
