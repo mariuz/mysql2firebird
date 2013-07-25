@@ -3,8 +3,27 @@ database structure dump (no data, only structure) from PHPMyAdmin. Not
 all datatypes are supported, but feel free to "fix" it. It's written
 in PHP and it's open source. 
 
-originally created  by Milan Babuskov
 
 Here is a quick overview
 
-http://www.backwardcompatible.net/post/8789818309/converting-mysql-database-to-firebird
+
+Make sure you test the output before using it in production. It does support some tricky 
+stuff like auto increment columns and LAST_INSERT_ID. There is a 
+stored procedure for this at the end of the script, you can call it 
+like this:
+
+select id from last_insert_id;
+On Windows, you can run the program like this:
+
+php.exe -f mysql2firebird.php mysql_dump.sql > firebird_dump.sql
+
+Once you create the Firebird script, make sure you search for text 
+WARNING: which might indicate some incompatibilities. For example, 
+Firebird does not have tinyint, mediumint and unsigned datatypes. 
+Also, check for TEXT and LONGTEXT. I’m using UTF8, so I converted 
+those to varchar(8000), which might not be what you want. Maybe BLOB 
+SUB_TYPE 0 would be a better choice
+
+
+Originally created  by Milan Babuskov
+http://www.backwardcompatible.net/115-converting-mysql-database-to-firebird
